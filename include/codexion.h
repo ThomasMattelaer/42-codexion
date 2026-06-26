@@ -20,12 +20,6 @@
 # include <string.h>
 # include <sys/time.h>
 
-typedef struct	s_coder
-{
-	int		thread_id;
-	t_data	*data
-}	t_coder;
-
 typedef struct	s_data
 {
 	int	nb_coders;
@@ -38,8 +32,16 @@ typedef struct	s_data
 	int	scheduler;
 }	t_data;
 
-int	is_valid_data(int argc, char **argv);
-int	is_enough_arguments(int argc);
-int valid_scheduler(char *s1);
+typedef struct	s_coder
+{
+	int		thread_id;
+	t_data	*data;
+}	t_coder;
+
+
+int		is_valid_data(int argc, char **argv);
+int		is_enough_arguments(int argc);
+int		valid_scheduler(char *s1);
+void	creation_threads(t_data *data);
 
 #endif

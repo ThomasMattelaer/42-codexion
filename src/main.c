@@ -32,7 +32,7 @@ int	main(int argc, char **argv)
 	data->required = atoi(argv[6]);
 	data->cooldown = atoi(argv[7]);
 	data->scheduler = valid_scheduler(argv[8]);
-	routine()
+	creation_threads(data);
 	free(data);
 	return (0);
 }

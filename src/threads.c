@@ -15,24 +15,27 @@
 void	*routine(void *arg)
 {
 	t_coder	*coder;
+	struct timeval tv;
 	int	i;
 
 	i = 0;
 	coder = (t_coder *)arg;
-	struct timeval tv;
 	gettimeofday(&tv, NULL);
 	long ms = tv.tv_sec * 1000 + tv.tv_usec / 1000;
-	printf("time %lu", ms);
+	printf("time %lu ", ms);
+	printf("numero de thread: %d", coder->thread_id);
 	//while (i < coder->data->required || )
 }
 
-void	creation_threads(int nb, t_data *data)
+void	creation_threads(t_data *data)
 {
 	pthread_t	*threads;
 	t_coder		*coder;
 	int			i;
+	int			nb;
 
 	i = 0;
+	nb = data->nb_coders; 
 	threads = malloc(sizeof(pthread_t) * nb);
 	coder = malloc(sizeof(t_coder) * nb);
 	if(!threads || !coder)
