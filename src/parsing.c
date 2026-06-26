@@ -14,16 +14,17 @@
 
 int is_not_int_max(char *argv);
 int	is_enough_arguments(int argc);
+int valid_scheduler(char *s1);
 
 int	is_valid_data(int argc, char **argv)
 {
-	size_t	i;
+	int	i;
 	size_t	j;
 
 	i = 1;
-	if(is_enough_arguments(argc) == 0)
+	if(is_enough_arguments(argc) == 0 || valid_scheduler(argv[argc - 1]) == 0)
 		return (0);
-	while(argv[i])
+	while(i < argc - 1)
 	{
 		j = 0;
 		while (argv[i][j])
@@ -71,6 +72,15 @@ int is_not_int_max(char *argv)
 		i++;
 	}
 	return (1);
+}
+
+int valid_scheduler(char *s1)
+{
+	if (strcmp(s1, "fifo") == 0 )
+		return (1);
+	else if (strcmp(s1, "edf") == 0)
+		return (2);
+	return (0);
 }
 
 

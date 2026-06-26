@@ -19,6 +19,19 @@
 # include <pthread.h>
 # include <string.h>
 
+typedef struct s_data
+{
+	int	nb_coders;
+	int	burnout;
+	int	compile;
+	int	debug;
+	int	refactor;
+	int	required;
+	int dongles;
+	int	FIFO;
+	int	EDF;
+}	t_data; 
+
 int	is_valid_data(int argc, char **argv);
 int	is_enough_arguments(int argc);
 
