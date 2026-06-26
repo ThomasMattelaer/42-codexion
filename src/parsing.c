@@ -10,13 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "codexion.h"
+#include <limits.h>
 
-int	is_valid_data(char **argv)
+int is_not_int_max(char *argv);
+int	is_enough_arguments(int argc);
+
+int	is_valid_data(int argc, char **argv)
 {
-	int	i;
-	int	j;
+	size_t	i;
+	size_t	j;
 
 	i = 1;
+	if(is_enough_arguments(argc) == 0)
+		return (0);
 	while(argv[i])
 	{
 		j = 0;
@@ -29,6 +35,8 @@ int	is_valid_data(char **argv)
 			}
 			j++;
 		}
+		if (is_not_int_max(argv[i]) == 0)
+			return (0);
 		i++;
 	}
 	return (1);
@@ -44,3 +52,25 @@ int	is_enough_arguments(int argc)
 	}
 	return (1);
 }
+
+int is_not_int_max(char *argv)
+{
+	size_t	i;
+	int	nb;
+
+	i = 0;
+	nb = 0;
+	while (argv[i] >= '0' && argv[i] <= '9')
+	{
+		if (nb > 214748364 || (nb == 214748364 && (argv[i] - '0') > 7))
+		{
+			printf("[ERROR]: Overflow detected\n");
+    		return (0);
+		}
+		nb = (nb * 10) + (argv[i] - '0');
+		i++;
+	}
+	return (1);
+}
+
+

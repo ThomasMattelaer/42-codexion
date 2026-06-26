@@ -16,8 +16,10 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <pthread.h>
+# include <string.h>
 
-int	is_valid_data(char **argv);
+int	is_valid_data(int argc, char **argv);
 int	is_enough_arguments(int argc);
 
 #endif

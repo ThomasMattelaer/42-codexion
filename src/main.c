@@ -14,7 +14,9 @@
 
 int	main(int argc, char **argv)
 {
-	if(is_valid_data(argv) == 0 || is_enough_arguments(argc) == 0)
+	if(is_valid_data(argc, argv) == 0)
 		return(0);
+	int result = atoi(argv[8]);
+	printf("%d", result);
 	return (1);
 }
