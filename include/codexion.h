@@ -18,8 +18,15 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <string.h>
+# include <sys/time.h>
 
-typedef struct s_data
+typedef struct	s_coder
+{
+	int		thread_id;
+	t_data	*data
+}	t_coder;
+
+typedef struct	s_data
 {
 	int	nb_coders;
 	int	burnout;
@@ -27,12 +34,12 @@ typedef struct s_data
 	int	debug;
 	int	refactor;
 	int	required;
-	int dongles;
-	int	FIFO;
-	int	EDF;
-}	t_data; 
+	int	cooldown;
+	int	scheduler;
+}	t_data;
 
 int	is_valid_data(int argc, char **argv);
 int	is_enough_arguments(int argc);
+int valid_scheduler(char *s1);
 
 #endif
