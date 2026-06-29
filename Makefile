@@ -8,10 +8,11 @@ SRC_FILES   := ${SRC_DIR}main.c \
                ${SRC_DIR}parsing.c \
                ${SRC_DIR}threads.c \
 			   ${SRC_DIR}utils.c \
+			   ${SRC_DIR}utils_threads.c \
 
 OBJ := $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC_FILES))
 
-CFLAGS      := -Wall -Wextra -Werror -I $(INCLUDE_DIR)
+CFLAGS      := -Wall -Wextra -Werror -I $(INCLUDE_DIR) -g
 
 all: $(NAME)
 

@@ -49,11 +49,13 @@ t_dongle	*init_dongles(int nb)
 	dongles = malloc(sizeof(t_dongle) * nb);
 	if (!dongles)
 		return (NULL);
-	while (i++ < nb)
+	while (i < nb)
 	{
 		dongles[i].available = 1;
 		dongles[i].last_release = 0;
 		pthread_mutex_init(&dongles[i].mutex, NULL);
+		pthread_cond_init(&dongles[i].cond, NULL);
+		i++;
 	}
 	return (dongles);
 }

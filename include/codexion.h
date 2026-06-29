@@ -22,15 +22,15 @@
 
 typedef struct s_dongle
 {
-	long			last_release;
 	pthread_mutex_t	mutex;
+	pthread_cond_t	cond;
 	int				available;
+	int				last_release;
 }	t_dongle;
 
 typedef struct s_data
 {
 	int			nb_coders;
-	t_dongle	*dongles;
 	int			burnout;
 	int			compile;
 	int			debug;
@@ -38,12 +38,13 @@ typedef struct s_data
 	int			required;
 	int			cooldown;
 	int			scheduler;
+	t_dongle	*dongles;
 }	t_data;
 
 typedef struct s_coder
 {
 	int		thread_id;
-	long	last_compile;
+	int		last_compile;
 	t_data	*data;
 }	t_coder;
 
@@ -51,6 +52,12 @@ int		is_valid_data(int argc, char **argv);
 int		is_enough_arguments(int argc);
 int		valid_scheduler(char *s1);
 void	creation_threads(t_data *data);
-size_t	get_current_time(void);
+int		get_current_time(void);
+int		request_dongle(t_dongle *dongle, t_coder *coder);
+int		min(int a, int b);
+int		max(int a, int b);
+int		request_dongle(t_dongle *dongle, t_coder *coder);
+int		release_dongle(t_dongle *dongle);
+void	display_state(char *s, int milliseconds, int index);
 
 #endif
