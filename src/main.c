@@ -10,16 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "codexion.h"
+#include "codexion.h"
 
 int	main(int argc, char **argv)
 {
-	t_data *data;
+	t_data	*data;
 
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (1);
-	if(is_valid_data(argc, argv) == 0)
+	if (is_valid_data(argc, argv) == 0)
 	{
 		free(data);
 		return (1);

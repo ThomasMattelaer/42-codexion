@@ -20,7 +20,7 @@
 # include <string.h>
 # include <sys/time.h>
 
-typedef struct	s_data
+typedef struct s_data
 {
 	int	nb_coders;
 	int	burnout;
@@ -32,12 +32,11 @@ typedef struct	s_data
 	int	scheduler;
 }	t_data;
 
-typedef struct	s_coder
+typedef struct s_coder
 {
 	int		thread_id;
 	t_data	*data;
 }	t_coder;
-
 
 int		is_valid_data(int argc, char **argv);
 int		is_enough_arguments(int argc);
