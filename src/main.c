@@ -12,6 +12,8 @@
 
 #include "codexion.h"
 
+t_dongle	*init_dongles(int nb);
+
 int	main(int argc, char **argv)
 {
 	t_data	*data;
@@ -32,7 +34,26 @@ int	main(int argc, char **argv)
 	data->required = atoi(argv[6]);
 	data->cooldown = atoi(argv[7]);
 	data->scheduler = valid_scheduler(argv[8]);
+	data->dongles = init_dongles(data->nb_coders);
 	creation_threads(data);
 	free(data);
 	return (0);
+}
+
+t_dongle	*init_dongles(int nb)
+{
+	t_dongle	*dongles;
+	int			i;
+
+	i = 0;
+	dongles = malloc(sizeof(t_dongle) * nb);
+	if (!dongles)
+		return (NULL);
+	while (i++ < nb)
+	{
+		dongles[i].available = 1;
+		dongles[i].last_release = 0;
+		pthread_mutex_init(&dongles[i].mutex, NULL);
+	}
+	return (dongles);
 }

@@ -7,6 +7,7 @@ OBJ_DIR     := obj/
 SRC_FILES   := ${SRC_DIR}main.c \
                ${SRC_DIR}parsing.c \
                ${SRC_DIR}threads.c \
+			   ${SRC_DIR}utils.c \
 
 OBJ := $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC_FILES))
 

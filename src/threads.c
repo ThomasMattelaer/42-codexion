@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmattela <tmattela@student.42belgium.be>   #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026-06-24 08:36:02 by tmattela          #+#    #+#             */
-/*   Updated: 2026-06-24 08:36:02 by tmattela         ###   ########.fr       */
+/*   Created: 2026-06-29 12:33:36 by tmattela          #+#    #+#             */
+/*   Updated: 2026-06-29 12:33:36 by tmattela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "codexion.h"
 
@@ -19,14 +20,23 @@ void	join_threads(int nb, pthread_t *threads);
 void	*routine(void *arg)
 {
 	t_coder			*coder;
-	struct timeval	tv;
-	//int	i;
-	// i = 0;
+	int				left;
+	int				right;
+
 	coder = (t_coder *)arg;
-	gettimeofday(&tv, NULL);
-	long ms = tv.tv_sec * 1000 + tv.tv_usec / 1000;
-	printf("time %lu\n", ms);
-	printf("numero de thread: %d\n", coder->thread_id);
+	coder->last_compile = get_current_time();
+	//START TO COMPILE (LOCK THE DONGLES, SLEEP, RELEASE THE DONGLES)
+	left = coder->thread_id;
+	right = (coder->thread_id + 1) % coder->data->nb_coders;
+	if (left > right)
+	{
+		left = (coder->thread_id + 1) % coder->data->nb_coders;
+		right = coder->thread_id;
+	}
+	pthread_mutex_lock(&coder->data->dongles[left].mutex);
+	pthread_mutex_lock(&coder->data->dongles[right].mutex);
+	//START TO DEBUG (SLEEP)
+	//START TO REFACTOR (SLEEP)
 	//while (i < coder->data->required || )
 	return (coder);
 }
@@ -35,45 +45,26 @@ void	creation_threads(t_data *data)
 {
 	pthread_t	*threads;
 	t_coder		*coder;
-	int			nb;
+	int			i;
 
-	nb = data->nb_coders;
-	threads = malloc(sizeof(pthread_t) * nb);
-	coder = malloc(sizeof(t_coder) * nb);
+	threads = malloc(sizeof(pthread_t) * data->nb_coders);
+	coder = malloc(sizeof(t_coder) * data->nb_coders);
 	if (!threads || !coder)
 	{
 		free(threads);
 		free(coder);
 		return ;
 	}
-	create_threads(nb, threads, coder, data);
-	join_threads(nb, threads);
-	free(coder);
-	free(threads);
-}
-
-void	create_threads(int nb, pthread_t *threads, t_coder *coder, t_data *data)
-{
-	int	i;
-
 	i = 0;
-	while (i < nb)
+	while (i++ < data->nb_coders)
 	{
 		coder[i].thread_id = i;
 		coder[i].data = data;
 		pthread_create(&threads[i], NULL, routine, &coder[i]);
-		i++;
 	}
-}
-
-void	join_threads(int nb, pthread_t *threads)
-{
-	int	i;
-
 	i = 0;
-	while (i < nb)
-	{
+	while (i++ < data->nb_coders)
 		pthread_join(threads[i], NULL);
-		i++;
-	}
+	free(coder);
+	free(threads);
 }

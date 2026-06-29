@@ -20,21 +20,30 @@
 # include <string.h>
 # include <sys/time.h>
 
+typedef struct s_dongle
+{
+	long			last_release;
+	pthread_mutex_t	mutex;
+	int				available;
+}	t_dongle;
+
 typedef struct s_data
 {
-	int	nb_coders;
-	int	burnout;
-	int	compile;
-	int	debug;
-	int	refactor;
-	int	required;
-	int	cooldown;
-	int	scheduler;
+	int			nb_coders;
+	t_dongle	*dongles;
+	int			burnout;
+	int			compile;
+	int			debug;
+	int			refactor;
+	int			required;
+	int			cooldown;
+	int			scheduler;
 }	t_data;
 
 typedef struct s_coder
 {
 	int		thread_id;
+	long	last_compile;
 	t_data	*data;
 }	t_coder;
 
@@ -42,5 +51,6 @@ int		is_valid_data(int argc, char **argv);
 int		is_enough_arguments(int argc);
 int		valid_scheduler(char *s1);
 void	creation_threads(t_data *data);
+size_t	get_current_time(void);
 
 #endif
