@@ -35,7 +35,7 @@ int	main(int argc, char **argv)
 	data->cooldown = atoi(argv[7]);
 	data->scheduler = valid_scheduler(argv[8]);
 	data->dongles = init_dongles(data->nb_coders);
-	data->start_time = get_current_time(); 
+	data->start_time = get_current_time();
 	creation_threads(data);
 	free(data);
 	return (0);

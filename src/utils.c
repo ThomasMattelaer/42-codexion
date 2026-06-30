@@ -14,14 +14,14 @@
 
 int	min(int a, int b)
 {
-	if(a > b)
+	if (a > b)
 		return (b);
 	return (a);
 }
 
 int	max(int a, int b)
 {
-	if(a > b)
+	if (a > b)
 		return (a);
 	return (b);
 }
@@ -48,4 +48,3 @@ void	get_timeout(int timeout_ms, struct timespec *abstime)
 		abstime->tv_nsec -= 1000000000;
 	}
 }
-

@@ -62,13 +62,16 @@ void	creation_threads(t_data *data)
 	free(coder);
 	free(threads);
 }
+
 int	request_dongles(t_coder *coder)
 {
 	int	left;
 	int	right;
 
-	left = min((coder->thread_id + 1) % coder->data->nb_coders, coder->thread_id);
-	right = max((coder->thread_id + 1) % coder->data->nb_coders, coder->thread_id);
+	left = min((coder->thread_id + 1) % coder->data->nb_coders,
+			coder->thread_id);
+	right = max((coder->thread_id + 1) % coder->data->nb_coders,
+			coder->thread_id);
 	request_dongle(&coder->data->dongles[left], coder);
 	request_dongle(&coder->data->dongles[right], coder);
 	return (0);
@@ -79,10 +82,11 @@ int	release_dongles(t_coder *coder)
 	int	left;
 	int	right;
 
-	left = min((coder->thread_id + 1) % coder->data->nb_coders, coder->thread_id);
-	right = max((coder->thread_id + 1) % coder->data->nb_coders, coder->thread_id);
+	left = min((coder->thread_id + 1) % coder->data->nb_coders,
+			coder->thread_id);
+	right = max((coder->thread_id + 1) % coder->data->nb_coders,
+			coder->thread_id);
 	release_dongle(&coder->data->dongles[left]);
 	release_dongle(&coder->data->dongles[right]);
-	return(0);
-
+	return (0);
 }
