@@ -20,6 +20,8 @@
 # include <string.h>
 # include <sys/time.h>
 
+typedef struct s_coder t_coder;
+
 typedef struct s_dongle
 {
 	pthread_mutex_t	mutex;
@@ -30,22 +32,26 @@ typedef struct s_dongle
 
 typedef struct s_data
 {
-	int			nb_coders;
-	int			start_time;
-	int			burnout;
-	int			compile;
-	int			debug;
-	int			refactor;
-	int			required;
-	int			cooldown;
-	int			scheduler;
-	t_dongle	*dongles;
+	int				nb_coders;
+	int				start_time;
+	int				burnout;
+	int				compile;
+	int				debug;
+	int				refactor;
+	int				required;
+	int				cooldown;
+	int				scheduler;
+	int				burnout_detected;
+	pthread_mutex_t	mutex_burn;
+	t_dongle		*dongles;
+	t_coder			*coder;
 }	t_data;
 
 typedef struct s_coder
 {
 	int		thread_id;
 	int		last_compile;
+	int		nb_compiled; 
 	t_data	*data;
 }	t_coder;
 
@@ -59,6 +65,8 @@ int		min(int a, int b);
 int		max(int a, int b);
 int		request_dongle(t_dongle *dongle, t_coder *coder);
 int		release_dongle(t_dongle *dongle);
+int		request_dongles(t_coder *coder);
+int		release_dongles(t_coder *coder);
 void	display_state(char *s, t_coder *coder, int milliseconds);
 void	get_timeout(int timeout_ms, struct timespec *abstime);
 
