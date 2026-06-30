@@ -26,11 +26,10 @@ void	*routine(void *arg)
 	{
 		request_dongles(coder);
 		coder->last_compile = get_current_time();
-		display_state("is compiling", coder->thread_id + 1, coder->data->compile);
-		printf("test");
+		display_state("is compiling", coder, coder->data->compile);
 		release_dongles(coder);
-		// debug();
-		// refactor();
+		display_state("is debugging", coder, coder->data->debug);
+		display_state("is refactoring", coder, coder->data->refactor);
 		i++;
 	}
 	return (coder);
@@ -68,7 +67,6 @@ int	request_dongles(t_coder *coder)
 	int	left;
 	int	right;
 
-	printf("thread %d requesting dongle, available=%d\n", coder->thread_id, coder->data->dongles->available);
 	left = min((coder->thread_id + 1) % coder->data->nb_coders, coder->thread_id);
 	right = max((coder->thread_id + 1) % coder->data->nb_coders, coder->thread_id);
 	request_dongle(&coder->data->dongles[left], coder);

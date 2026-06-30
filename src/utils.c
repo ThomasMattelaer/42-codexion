@@ -34,3 +34,18 @@ int	get_current_time(void)
 		write(2, "gettimeofday() error\n", 22);
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
+
+void	get_timeout(int timeout_ms, struct timespec *abstime)
+{
+	struct timeval	now;
+
+	gettimeofday(&now, NULL);
+	abstime->tv_sec = now.tv_sec + timeout_ms / 1000;
+	abstime->tv_nsec = now.tv_usec * 1000 + (timeout_ms % 1000) * 1000000;
+	if (abstime->tv_nsec >= 1000000000)
+	{
+		abstime->tv_sec += 1;
+		abstime->tv_nsec -= 1000000000;
+	}
+}
+

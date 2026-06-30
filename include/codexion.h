@@ -31,6 +31,7 @@ typedef struct s_dongle
 typedef struct s_data
 {
 	int			nb_coders;
+	int			start_time;
 	int			burnout;
 	int			compile;
 	int			debug;
@@ -58,6 +59,7 @@ int		min(int a, int b);
 int		max(int a, int b);
 int		request_dongle(t_dongle *dongle, t_coder *coder);
 int		release_dongle(t_dongle *dongle);
-void	display_state(char *s, int milliseconds, int index);
+void	display_state(char *s, t_coder *coder, int milliseconds);
+void	get_timeout(int timeout_ms, struct timespec *abstime);
 
 #endif
