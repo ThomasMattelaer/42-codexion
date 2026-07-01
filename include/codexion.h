@@ -51,7 +51,7 @@ typedef struct s_coder
 {
 	int		thread_id;
 	int		last_compile;
-	int		nb_compiled; 
+	int		nb_compiled;
 	t_data	*data;
 }	t_coder;
 
@@ -60,14 +60,13 @@ int		is_enough_arguments(int argc);
 int		valid_scheduler(char *s1);
 void	creation_threads(t_data *data);
 int		get_current_time(void);
-int		request_dongle(t_dongle *dongle, t_coder *coder);
 int		min(int a, int b);
 int		max(int a, int b);
-int		request_dongle(t_dongle *dongle, t_coder *coder);
+int		request_dongle(t_dongle *dongle, t_coder *coder, int dongle_nb);
 int		release_dongle(t_dongle *dongle);
 int		request_dongles(t_coder *coder);
 int		release_dongles(t_coder *coder);
-void	display_state(char *s, t_coder *coder, int milliseconds);
+void	display_state(char *s, t_coder *coder, int milliseconds, int dongle_nb);
 void	get_timeout(int timeout_ms, struct timespec *abstime);
 
 #endif

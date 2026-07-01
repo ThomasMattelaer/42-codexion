@@ -17,9 +17,11 @@ void	*monitor_routine(void	*arg)
 	t_data	*data;
 	int		i;
 	int		over;
+	int		j;
 
 	data = (t_data *)arg;
 	over = 0;
+	usleep(5000);
 	while (data->burnout_detected == 0 && over == 0)
 	{
 		i = -1;
@@ -30,12 +32,18 @@ void	*monitor_routine(void	*arg)
 			{
 				pthread_mutex_lock(&data->mutex_burn);
 				data->burnout_detected = 1;
-				display_state("burned out", &data->coder[i], data->burnout);
 				pthread_mutex_unlock(&data->mutex_burn);
+				j = -1;
+				while (++j < data->nb_coders)
+					pthread_cond_broadcast(&data->dongles[j].cond);
+				display_state("burned out", &data->coder[i], data->burnout, 0);
+
+
 			}
 			if (data->coder[i].nb_compiled < data->required)
 				over = 0;
 		}
+		usleep(2000);
 	}
 	return (data);
 }
@@ -51,12 +59,17 @@ void	*routine(void *arg)
 	i = -1;
 	while (++i < required && coder->data->burnout_detected == 0)
 	{
-		request_dongles(coder);
+		if(request_dongles(coder))
+			break;
 		coder->last_compile = get_current_time();
-		display_state("is compiling", coder, coder->data->compile);
+		display_state("is compiling", coder, coder->data->compile, 0);
 		release_dongles(coder);
-		display_state("is debugging", coder, coder->data->debug);
-		display_state("is refactoring", coder, coder->data->refactor);
+		if (coder->data->burnout_detected)
+			break;
+		display_state("is debugging", coder, coder->data->debug, 0);
+		if (coder->data->burnout_detected)
+			break;
+		display_state("is refactoring", coder, coder->data->refactor, 0);
 		coder->nb_compiled++;
 	}
 	return (coder);
@@ -71,6 +84,8 @@ void	create_threads(t_data *data, t_coder *coder, pthread_t *monitor, pthread_t 
 	{
 		coder[i].thread_id = i;
 		coder[i].data = data;
+		coder[i].nb_compiled = 0;
+		coder[i].last_compile = get_current_time();
 		pthread_create(&threads[i], NULL, routine, &coder[i]);
 		i++;
 	}
