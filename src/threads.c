@@ -37,6 +37,7 @@ void	*monitor_routine(void	*arg)
 				while (++j < data->nb_coders)
 					pthread_cond_broadcast(&data->dongles[j].cond);
 				display_state("burned out", &data->coder[i], data->burnout, 0);
+				return (data); 
 
 
 			}
