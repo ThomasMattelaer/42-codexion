@@ -6,7 +6,7 @@
 /*   By: tmattela <<tmattela@student.42belgium.b    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 12:33:36 by tmattela          #+#    #+#             */
-/*   Updated: 2026/07/07 16:34:34 by tmattela         ###   ########.fr       */
+/*   Updated: 2026/07/07 16:58:34 by tmattela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	*monitor_routine(void	*arg)
 				while (++j < data->nb_coders)
 					pthread_cond_broadcast(&data->dongles[j].cond);
 				display_state("burned out", &data->coder[i], data->burnout, 0);
-				break;
+				return (data);
 			}
 			if (data->coder[i].nb_compiled < data->required)
 				over = 0;
