@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmattela <tmattela@student.42belgium.be>   #+#  +:+       +#+        */
+/*   By: tmattela <<tmattela@student.42belgium.b    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026-06-24 12:17:48 by tmattela          #+#    #+#             */
-/*   Updated: 2026-06-24 12:17:48 by tmattela         ###   ########.fr       */
+/*   Created: 2026/06/24 12:17:48 by tmattela          #+#    #+#             */
+/*   Updated: 2026/07/07 16:17:04 by tmattela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,7 @@ int		request_dongles(t_coder *coder);
 int		release_dongles(t_coder *coder);
 void	display_state(char *s, t_coder *coder, int milliseconds, int dongle_nb);
 void	get_timeout(int timeout_ms, struct timespec *abstime);
+void	*monitor_routine(void	*arg);
+void	*routine(void *arg); 
 
 #endif
