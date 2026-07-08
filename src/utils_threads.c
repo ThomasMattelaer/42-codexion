@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_threads.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmattela <tmattela@student.42belgium.be>   #+#  +:+       +#+        */
+/*   By: tmattela <<tmattela@student.42belgium.b    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026-06-29 15:07:26 by tmattela          #+#    #+#             */
-/*   Updated: 2026-06-29 15:07:26 by tmattela         ###   ########.fr       */
+/*   Created: 2026/06/29 15:07:26 by tmattela          #+#    #+#             */
+/*   Updated: 2026/07/08 10:53:03 by tmattela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

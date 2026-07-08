@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmattela <tmattela@student.42belgium.be>   #+#  +:+       +#+        */
+/*   By: tmattela <<tmattela@student.42belgium.b    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026-06-24 08:36:02 by tmattela          #+#    #+#             */
-/*   Updated: 2026-06-24 08:36:02 by tmattela         ###   ########.fr       */
+/*   Created: 2026/06/24 08:36:02 by tmattela          #+#    #+#             */
+/*   Updated: 2026/07/08 10:41:47 by tmattela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "codexion.h"
+
 #include <limits.h>
 
 int	is_not_int_max(char *argv);
@@ -18,8 +18,8 @@ int	valid_scheduler(char *s1);
 
 int	is_valid_data(int argc, char **argv)
 {
-	int		i;
-	size_t	j;
+	int	i;
+	int	j;
 
 	i = 1;
 	if (is_enough_arguments(argc) == 0 || valid_scheduler(argv[argc - 1]) == 0)
@@ -57,8 +57,8 @@ int	is_enough_arguments(int argc)
 
 int	is_not_int_max(char *argv)
 {
-	size_t	i;
-	int		nb;
+	int	i;
+	int	nb;
 
 	i = 0;
 	nb = 0;

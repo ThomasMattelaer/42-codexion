@@ -6,7 +6,7 @@
 /*   By: tmattela <<tmattela@student.42belgium.b    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/24 12:17:48 by tmattela          #+#    #+#             */
-/*   Updated: 2026/07/07 16:17:04 by tmattela         ###   ########.fr       */
+/*   Updated: 2026/07/08 11:23:21 by tmattela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,26 @@
 
 typedef struct s_coder t_coder;
 
+typedef struct s_request
+{
+	int	arrival;
+	int	burnout_time;
+	int	coder_id;
+} t_request;
+
+typedef struct s_heap
+{
+	int			size;
+	t_request	*tab
+}	t_heap;
+
 typedef struct s_dongle
 {
 	pthread_mutex_t	mutex;
 	pthread_cond_t	cond;
 	int				available;
 	int				last_release;
+	t_heap			*queue; 
 }	t_dongle;
 
 typedef struct s_data
@@ -69,6 +83,6 @@ int		release_dongles(t_coder *coder);
 void	display_state(char *s, t_coder *coder, int milliseconds, int dongle_nb);
 void	get_timeout(int timeout_ms, struct timespec *abstime);
 void	*monitor_routine(void	*arg);
-void	*routine(void *arg); 
+void	*routine(void *arg);
 
 #endif
