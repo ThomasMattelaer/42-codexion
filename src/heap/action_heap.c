@@ -6,10 +6,9 @@
 /*   By: tmattela <<tmattela@student.42belgium.b    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/10 14:59:32 by tmattela          #+#    #+#             */
-/*   Updated: 2026/07/10 15:01:12 by tmattela         ###   ########.fr       */
+/*   Updated: 2026/07/11 12:35:36 by tmattela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "codexion.h"
 
@@ -23,42 +22,55 @@ int	is_higher_priority(t_request a, t_request b, int mode)
 	}
 	return (a.arrival < b.arrival);
 }
-
-t_request	pop_node(t_heap *heap, int coder_id, int mode)
+void	rearrange_heap(t_heap *heap, int curr, int mode)
 {
-	t_request	value;
-	int			curr;
 	int			left;
 	int			right;
 	int			smallest;
+	t_request	tmp;
 
-	curr = 0;
-	if (heap->size == 0)
-		return ;
-	value = heap->tab[0];
-	heap->tab[0] = heap->tab[heap->size - 1];
-	heap->size--;
 	while (2 * curr + 1 < heap->size)
 	{
 		left = 2 * curr + 1;
 		right = 2 * curr + 2;
 		smallest = left;
-		if (is_higher_priority(heap->tab[right],heap->tab[left], mode)
-			&& right < heap->size)
+		if (right < heap->size
+			&& is_higher_priority(heap->tab[right], heap->tab[left], mode))
 			smallest = right;
 		if (is_higher_priority(heap->tab[smallest], heap->tab[curr], mode))
 		{
-
+			tmp = heap->tab[smallest];
+			heap->tab[smallest] = heap->tab[curr];
+			heap->tab[curr] = tmp;
+			curr = smallest;
 		}
+		else
+			break ;
 	}
-
-
 }
 
-void	push_node(t_heap *heap, int burnout_time, int coder_id)
+t_request	pop_node(t_heap *heap, int coder_id, int mode)
+{
+	t_request   value;
+
+	if (heap->size == 0)
+	{
+		t_request empty = {0};
+		return (empty);
+	}
+	value = heap->tab[0];
+	heap->tab[0] = heap->tab[heap->size - 1];
+	heap->size--;
+	if (heap->size > 0)
+		rearrange_heap(heap, 0, mode);
+	return (value); 
+}
+
+void	push_node(t_heap *heap, int burnout_time, int coder_id, int mode)
 {
 	heap->tab[heap->size].coder_id = coder_id;
 	heap->tab[heap->size].burnout_time = burnout_time;
 	heap->tab[heap->size].arrival = get_current_time;
 	heap->size++;
+	organise_heap(heap, mode);
 }

@@ -6,7 +6,7 @@
 /*   By: tmattela <<tmattela@student.42belgium.b    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/24 12:17:48 by tmattela          #+#    #+#             */
-/*   Updated: 2026/07/08 11:23:21 by tmattela         ###   ########.fr       */
+/*   Updated: 2026/07/11 12:59:00 by tmattela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_dongle
 	pthread_cond_t	cond;
 	int				available;
 	int				last_release;
-	t_heap			*queue; 
+	t_heap			*queue;
 }	t_dongle;
 
 typedef struct s_data
@@ -69,20 +69,25 @@ typedef struct s_coder
 	t_data	*data;
 }	t_coder;
 
-int		is_valid_data(int argc, char **argv);
-int		is_enough_arguments(int argc);
-int		valid_scheduler(char *s1);
-void	creation_threads(t_data *data);
-int		get_current_time(void);
-int		min(int a, int b);
-int		max(int a, int b);
-int		request_dongle(t_dongle *dongle, t_coder *coder, int dongle_nb);
-int		release_dongle(t_dongle *dongle);
-int		request_dongles(t_coder *coder);
-int		release_dongles(t_coder *coder);
-void	display_state(char *s, t_coder *coder, int milliseconds, int dongle_nb);
-void	get_timeout(int timeout_ms, struct timespec *abstime);
-void	*monitor_routine(void	*arg);
-void	*routine(void *arg);
+int			is_valid_data(int argc, char **argv);
+int			is_enough_arguments(int argc);
+int			valid_scheduler(char *s1);
+void		creation_threads(t_data *data);
+int			get_current_time(void);
+int			min(int a, int b);
+int			max(int a, int b);
+int			request_dongle(t_dongle *dongle, t_coder *coder, int dongle_nb);
+int			release_dongle(t_dongle *dongle);
+int			request_dongles(t_coder *coder);
+int			release_dongles(t_coder *coder);
+void		display_state(char *s, t_coder *coder, int milliseconds, int dongle_nb);
+void		get_timeout(int timeout_ms, struct timespec *abstime);
+void		*monitor_routine(void	*arg);
+void		*routine(void *arg);
+void		organise_heap(t_heap *heap, int mode);
+int			duplicate_heap(t_heap heap, int coder_id);
+t_heap		*create_heap(int nb_coder);
+t_request	pop_node(t_heap *heap, int coder_id, int mode);
+void		push_node(t_heap *heap, int burnout_time, int coder_id, int mode); 
 
 #endif

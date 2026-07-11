@@ -3,6 +3,7 @@ NAME        := codexion
 INCLUDE_DIR := include/
 SRC_DIR     := src/
 OBJ_DIR     := obj/
+HEAP_DIR    := heap/
 
 SRC_FILES   := ${SRC_DIR}main.c \
                ${SRC_DIR}parsing.c \
@@ -10,6 +11,9 @@ SRC_FILES   := ${SRC_DIR}main.c \
 			   ${SRC_DIR}utils.c \
 			   ${SRC_DIR}utils_threads.c \
 			   ${SRC_DIR}init_threads.c \
+			   ${SRC_DIR}{HEAP_DIR}action_heap.c \
+			   ${SRC_DIR}{HEAP_DIR}create_heap.c \
+
 
 OBJ := $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC_FILES))
 

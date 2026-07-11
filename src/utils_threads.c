@@ -6,7 +6,7 @@
 /*   By: tmattela <<tmattela@student.42belgium.b    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 15:07:26 by tmattela          #+#    #+#             */
-/*   Updated: 2026/07/08 10:53:03 by tmattela         ###   ########.fr       */
+/*   Updated: 2026/07/11 12:58:06 by tmattela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ int	request_dongles(t_coder *coder)
 	right = max((coder->thread_id + 1) % coder->data->nb_coders,
 			coder->thread_id);
 	if (request_dongle(&coder->data->dongles[left], coder, left))
+	{
 		return (1);
+	}
 	if (request_dongle(&coder->data->dongles[right], coder, right))
 	{
 		release_dongle(&coder->data->dongles[left]);
