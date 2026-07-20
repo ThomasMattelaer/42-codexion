@@ -32,7 +32,7 @@ typedef struct s_request
 typedef struct s_heap
 {
 	int			size;
-	t_request	*tab
+	t_request	*tab;
 }	t_heap;
 
 typedef struct s_dongle
@@ -84,10 +84,12 @@ void		display_state(char *s, t_coder *coder, int milliseconds, int dongle_nb);
 void		get_timeout(int timeout_ms, struct timespec *abstime);
 void		*monitor_routine(void	*arg);
 void		*routine(void *arg);
-void		organise_heap(t_heap *heap, int mode);
-int			duplicate_heap(t_heap heap, int coder_id);
+void		organise_heap(t_heap *heap, int curr, int mode);
+int			duplicate_heap(const t_heap *heap, int coder_id);
 t_heap		*create_heap(int nb_coder);
-t_request	pop_node(t_heap *heap, int coder_id, int mode);
-void		push_node(t_heap *heap, int burnout_time, int coder_id, int mode); 
+t_request	pop_node(t_heap *heap, int mode);
+void		push_node(t_heap *heap, int burnout_time, int coder_id, int mode);
+void		clean_heap(t_heap *heap, int coder_id, int mode);
+int			is_higher_priority(t_request a, t_request b, int mode);
 
 #endif

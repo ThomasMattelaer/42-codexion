@@ -11,8 +11,8 @@ SRC_FILES   := ${SRC_DIR}main.c \
 			   ${SRC_DIR}utils.c \
 			   ${SRC_DIR}utils_threads.c \
 			   ${SRC_DIR}init_threads.c \
-			   ${SRC_DIR}{HEAP_DIR}action_heap.c \
-			   ${SRC_DIR}{HEAP_DIR}create_heap.c \
+			   ${SRC_DIR}${HEAP_DIR}action_heap.c \
+			   ${SRC_DIR}${HEAP_DIR}create_heap.c \
 
 
 OBJ := $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC_FILES))
@@ -24,12 +24,9 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	cc $(CFLAGS) $(OBJ) -o $(NAME)
 
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
-
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+	@mkdir -p $(dir $@)
 	cc $(CFLAGS) -c $< -o $@
-
 
 clean:
 	rm -rf $(OBJ_DIR)

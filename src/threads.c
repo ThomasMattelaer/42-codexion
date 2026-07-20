@@ -16,17 +16,16 @@ void	*monitor_routine(void	*arg)
 {
 	t_data	*data;
 	int		i;
-	int		over;
+	int		completed_coders;
 	int		j;
 
 	data = (t_data *)arg;
-	over = 0;
 	usleep(5000);
-	while (data->burnout_detected == 0 && over == 0)
+	while (data->burnout_detected == 0)
 	{
-		i = -1;
-		over = 1;
-		while (++i < data->nb_coders)
+		i = data->nb_coders;
+		completed_coders = 0;
+		while (--i > 0)
 		{
 			if (data->burnout < get_current_time() - data->coder[i].last_compile)
 			{
@@ -39,9 +38,11 @@ void	*monitor_routine(void	*arg)
 				display_state("burned out", &data->coder[i], data->burnout, 0);
 				return (data);
 			}
-			if (data->coder[i].nb_compiled < data->required)
-				over = 0;
+			if (data->coder[i].nb_compiled >= data->required)
+				completed_coders++;
 		}
+		if (completed_coders == data->nb_coders)
+			break;
 		usleep(2000);
 	}
 	return (data);

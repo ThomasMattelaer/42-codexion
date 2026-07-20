@@ -29,27 +29,24 @@ t_heap	*create_heap(int nb_coder)
 	return (heap);
 }
 
-int	duplicate_heap(t_heap heap, int coder_id)
+int	duplicate_heap(const t_heap *heap, int coder_id)
 {
 	int	i;
 
 	i = 0;
-	while (i < heap.size)
+	while (i < heap->size)
 	{
-		if (heap.tab[i].coder_id == coder_id)
+		if (heap->tab[i].coder_id == coder_id)
 			return (1);
 	}
 	return (0);
 }
 
-void	organise_heap(t_heap *heap, int mode)
+void	organise_heap(t_heap *heap, int curr, int mode)
 {
-	int			curr;
 	int			parent;
 	t_request	tmp;
-	t_request	tab;
 
-	curr = heap->size - 1;
 	parent = (curr - 1) / 2;
 	while (is_higher_priority(heap->tab[curr], heap->tab[parent], mode)
 		&& curr > 0)

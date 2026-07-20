@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <limits.h>
+#include "codexion.h"
 
 int	is_not_int_max(char *argv);
 int	is_enough_arguments(int argc);

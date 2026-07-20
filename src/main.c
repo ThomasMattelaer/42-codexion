@@ -20,12 +20,13 @@ int	main(int argc, char **argv)
 
 	data = malloc(sizeof(t_data));
 	if (!data)
-		return (1);
+	return (1);
 	if (is_valid_data(argc, argv) == 0)
 	{
 		free(data);
 		return (1);
 	}
+	printf("START ROUTINE");
 	data->nb_coders = atoi(argv[1]);
 	data->burnout = atoi(argv[2]);
 	data->compile = atoi(argv[3]);
@@ -36,6 +37,7 @@ int	main(int argc, char **argv)
 	data->scheduler = valid_scheduler(argv[8]);
 	data->dongles = init_dongles(data->nb_coders);
 	data->start_time = get_current_time();
+
 	creation_threads(data);
 	free(data);
 	return (0);
@@ -56,6 +58,7 @@ t_dongle	*init_dongles(int nb)
 		dongles[i].last_release = 0;
 		pthread_mutex_init(&dongles[i].mutex, NULL);
 		pthread_cond_init(&dongles[i].cond, NULL);
+		dongles[i].queue = create_heap(nb);
 		i++;
 	}
 	return (dongles);
