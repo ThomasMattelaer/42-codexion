@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmattela <<tmattela@student.42belgium.b    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/21 20:03:05 by tmattela          #+#    #+#             */
-/*   Updated: 2026/07/21 20:05:40 by tmattela         ###   ########.fr       */
+/*   Created: 2026/07/21 20:07:50 by tmattela          #+#    #+#             */
+/*   Updated: 2026/07/21 20:08:26 by tmattela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-int	main(int argc, char **argv)
+int	get_current_time(void)
 {
-	t_data	*data;
+	struct timeval	time;
 
-	data = malloc(sizeof(t_data));
-	if (!data)
-		return (1);
-	if (is_valid_data(argc, argv) == 0)
-	{
-		free(data);
-		return (1);
-	}
-	
+	if (gettimeofday(&time, NULL) == -1)
+		write(2, "gettimeofday() error\n", 22);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
+
+ft_usleep
