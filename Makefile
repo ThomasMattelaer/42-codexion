@@ -4,13 +4,12 @@ INCLUDE_DIR := include/
 SRC_DIR     := src/
 OBJ_DIR     := obj/
 HEAP_DIR    := heap/
+THREADS_DIR := threads/
 
 SRC_FILES   := ${SRC_DIR}main.c \
                ${SRC_DIR}parsing.c \
-               ${SRC_DIR}threads.c \
-			   ${SRC_DIR}utils.c \
-			   ${SRC_DIR}utils_threads.c \
-			   ${SRC_DIR}init_threads.c \
+			   ${SRC_DIR}${THREADS_DIR}time.c \
+			   ${SRC_DIR}${THREADS_DIR}dongle.c \
 			   ${SRC_DIR}${HEAP_DIR}action_heap.c \
 			   ${SRC_DIR}${HEAP_DIR}create_heap.c \
 
