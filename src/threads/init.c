@@ -40,12 +40,13 @@ void	create_threads(t_data *data, t_coder *coder, pthread_t *monitor,
 	int	i;
 
 	i = 0;
+	data->start_time = get_current_time(); 
 	while (i < data->nb_coders)
 	{
 		coder[i].id = i;
 		coder[i].data = data;
 		coder[i].nb_compiled = 0;
-		coder[i].last_compile = get_current_time();
+		coder[i].last_compile = data->start_time;
 		coder[i].left_dongle = &data->dongles[i];
 		coder[i].right_dongle = &data->dongles[(i + 1) % data->nb_coders];
 		i++;

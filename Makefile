@@ -13,6 +13,7 @@ SRC_FILES   := ${SRC_DIR}main.c \
 			   ${SRC_DIR}${THREADS_DIR}action_thread.c \
 			   ${SRC_DIR}${THREADS_DIR}init.c \
 			   ${SRC_DIR}${THREADS_DIR}routines.c \
+			   ${SRC_DIR}${THREADS_DIR}routines_utils.c \
 			   ${SRC_DIR}${HEAP_DIR}action_heap.c \
 			   ${SRC_DIR}${HEAP_DIR}create_heap.c \
 

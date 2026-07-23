@@ -48,13 +48,14 @@ typedef struct s_dongle
 
 typedef struct s_coder
 {
-	int			id;
-	pthread_t	thread;
-	long long	last_compile;
-	int			nb_compiled;
-	t_dongle	*left_dongle;
-	t_dongle	*right_dongle;
-	t_data		*data;
+	int				id;
+	pthread_t		thread;
+	long long		last_compile;
+	int				nb_compiled;
+	t_dongle		*left_dongle;
+	t_dongle		*right_dongle;
+	t_data			*data;
+	pthread_mutex_t	coder_mutex;
 }	t_coder;
 
 typedef struct s_data
@@ -104,5 +105,9 @@ void		display_dongle(char *s, t_coder *coder, int nb);
 void		init_simulation(t_data *data);
 void		ft_usleep(int timesleep, t_data *data);
 long long	timestamp(t_data *data);
+int			compiling(t_coder *coder);
+int			debugging_and_refactoring(t_coder *coder);
+int			is_coder_burned(t_data *data, int i);
+int			burnout_detected(t_data *data);
 
 #endif

@@ -63,3 +63,14 @@ void	display_dongle(char *s, t_coder *coder, int nb)
 	printf("\x1b[90m[%lldms]\x1b[0m \x1b[%sm%s\x1b[0m C%d D%d\n",
 		timestamp(coder->data), color, s, index, nb);
 }
+int	burnout_detected(t_data *data)
+{
+	int	burnout;
+
+	pthread_mutex_lock(&data->burn_mutex);
+	burnout = data->burnout_detected;
+	pthread_mutex_unlock(&data->burn_mutex);
+	if (burnout)
+		return (1);
+	return (0);
+}

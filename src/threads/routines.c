@@ -12,32 +12,6 @@
 
 #include "codexion.h"
 
-int	compiling(t_coder *coder)
-{
-	if (coder->data->burnout_detected)
-		return (0);
-	coder->last_compile = timestamp(coder->data);
-	display_state("is compiling", coder);
-	ft_usleep(coder->data->compile, coder->data);
-	if (coder->data->burnout_detected)
-		return (0);
-	coder->nb_compiled++;
-	return (1);
-}
-
-int	debugging_and_refactoring(t_coder *coder)
-{
-	if (coder->data->burnout_detected)
-		return (0);
-	display_state("is debugging", coder);
-	ft_usleep(coder->data->debug, coder->data);
-	if (coder->data->burnout_detected)
-		return (0);
-	display_state("is refactoring", coder);
-	ft_usleep(coder->data->refactor, coder->data);
-	return (1);
-}
-
 void	*coder_routine(void *arg)
 {
 	t_coder	*coder;
@@ -62,8 +36,30 @@ void	*coder_routine(void *arg)
 
 void	*monitor_routine(void	*arg)
 {
-	t_coder	*coder;
+	t_data	*data;
+	int		i;
+	int		finished_count;
 
-	coder = (t_coder *) arg;
-	return (coder);
+	data = (t_data *) arg;
+	i = 0;
+	while(1)
+	{
+		i = data->nb_coders;
+		finished_count = 0;
+		while (--i >= 0)
+		{
+			if (is_coder_burned(data, i))
+				return (NULL);
+			pthread_mutex_lock(&data->coders[i].coder_mutex);
+			if (data->coders[i].nb_compiled >= data->required_compiles)
+				finished_count++;
+			pthread_mutex_unlock(&data->coders[i].coder_mutex);
+		}
+		if (finished_count == data->nb_coders)
+			return (NULL);
+		usleep(1000);
+	}
+	return (NULL);
 }
+
+

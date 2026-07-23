@@ -30,7 +30,7 @@ int	request_single_dongle(t_coder *coder, t_dongle *dongle)
 		coder->last_compile + coder->data->burnout_time);
 	while (1)
 	{
-		if (coder->data->burnout_detected)
+		if (burnout_detected(coder->data))
 		{
 			remove_node(dongle->queue, coder->id);
 			pthread_cond_broadcast(&dongle->cond);
@@ -92,8 +92,10 @@ int	take_both_dongles(t_coder *coder)
 int	release_both_dongles(t_coder *coder)
 {
 	release_single_dongle(coder, coder->left_dongle);
-	display_dongle("release a dongle", coder, coder->left_dongle->id);
+	if(!burnout_detected(coder->data))
+		display_dongle("release a dongle", coder, coder->left_dongle->id);
 	release_single_dongle(coder, coder->right_dongle);
-	display_dongle("release a dongle", coder, coder->right_dongle->id);
+	if(!burnout_detected(coder->data))
+		display_dongle("release a dongle", coder, coder->right_dongle->id);
 	return (1);
 }

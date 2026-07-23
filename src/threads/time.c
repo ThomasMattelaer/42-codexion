@@ -52,7 +52,7 @@ void	ft_usleep(int timesleep, t_data *data)
 	long long	start;
 
 	start = get_current_time();
-	while (!data->burnout_detected)
+	while (!burnout_detected(data))
 	{
 		if (get_current_time() - start >= timesleep)
 			break ;
