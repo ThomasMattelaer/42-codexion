@@ -38,8 +38,6 @@ void	create_threads(t_data *data, t_coder *coder, pthread_t *monitor,
 	pthread_t *threads)
 {
 	int	i;
-	int	index_left;
-	int	index_right;
 
 	i = 0;
 	while (i < data->nb_coders)
@@ -48,10 +46,13 @@ void	create_threads(t_data *data, t_coder *coder, pthread_t *monitor,
 		coder[i].data = data;
 		coder[i].nb_compiled = 0;
 		coder[i].last_compile = get_current_time();
-		index_left = min(i, (i + 1) % data->nb_coders);
-		index_right = max(i, (i + 1) % data->nb_coders);
-		coder[i].left_dongle = &data->dongles[index_left];
-		coder[i].right_dongle = &data->dongles[index_right];
+		coder[i].left_dongle = &data->dongles[i];
+		coder[i].right_dongle = &data->dongles[(i + 1) % data->nb_coders];
+		i++;
+	}
+	i = 0;
+	while(i < data->nb_coders)
+	{
 		pthread_create(&threads[i], NULL, coder_routine, &coder[i]);
 		i++;
 	}

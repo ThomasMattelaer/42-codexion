@@ -86,7 +86,7 @@ int			valid_scheduler(char *s1);
 int			is_valid_data(int argc, char **argv);
 t_dongle	*init_dongles(int nb, int mode);
 long		get_current_time(void);
-void		get_timeout(int cooldown, int last_release,
+void		get_timeout(int cooldown, long long last_release,
 				struct timespec *abstime);
 void		init_data(t_data *data, char **argv);
 t_request	pop_node(t_heap *heap);
