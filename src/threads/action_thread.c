@@ -17,7 +17,7 @@ int	is_dongle_ready(t_coder *coder, t_dongle *dongle)
 	return (!dongle->is_taken
 		&& (dongle->queue->size > 0
 			&& dongle->queue->tab[0].coder_id == coder->id)
-		&& (get_current_time()
+		&& (timestamp(coder->data)
 			- dongle->last_release >= coder->data->cooldown));
 }
 
@@ -40,6 +40,7 @@ int	request_single_dongle(t_coder *coder, t_dongle *dongle)
 		if (is_dongle_ready(coder, dongle))
 		{
 			dongle->is_taken = 1;
+			display_dongle("has taken a dongle", coder, dongle->id);
 			pop_node(dongle->queue);
 			pthread_mutex_unlock(&dongle->mutex);
 			return (1);
@@ -63,8 +64,10 @@ int	take_both_dongles(t_coder *coder)
 {
 	if (coder->left_dongle == coder->right_dongle)
 		return (0);
+	display_dongle("request a dongle", coder, coder->right_dongle->id);
 	if (!request_single_dongle(coder, coder->left_dongle))
 		return (0);
+	display_dongle("request a dongle", coder, coder->right_dongle->id);
 	if (!request_single_dongle(coder, coder->right_dongle))
 	{
 		release_single_dongle(coder->left_dongle);
@@ -76,6 +79,8 @@ int	take_both_dongles(t_coder *coder)
 int	release_both_dongles(t_coder *coder)
 {
 	release_single_dongle(coder->left_dongle);
+	display_dongle("release a dongle", coder, coder->left_dongle->id);
 	release_single_dongle(coder->right_dongle);
+	display_dongle("release a dongle", coder, coder->right_dongle->id);
 	return (1);
 }

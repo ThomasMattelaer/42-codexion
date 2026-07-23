@@ -12,7 +12,7 @@
 
 #include "codexion.h"
 
-int	get_current_time(void)
+long	get_current_time(void)
 {
 	struct timeval	time;
 
@@ -24,7 +24,7 @@ int	get_current_time(void)
 void	get_timeout(int cooldown, int last_release, struct timespec *abstime)
 {
 	struct timeval	now;
-	int				remaining;
+	long long		remaining;
 
 	remaining = cooldown
 		- (get_current_time() - last_release);
@@ -42,13 +42,18 @@ void	get_timeout(int cooldown, int last_release, struct timespec *abstime)
 
 void	ft_usleep(int timesleep, t_data *data)
 {
-	int	start;
+	long long	start;
 
 	start = get_current_time();
-	while(!data->burnout_detected)
+	while (!data->burnout_detected)
 	{
-		if(get_current_time() - start >= timesleep)
-			break;
+		if (get_current_time() - start >= timesleep)
+			break ;
 		usleep(500);
 	}
+}
+
+long long	timestamp(t_data *data)
+{
+	return (get_current_time() - data->start_time);
 }

@@ -23,29 +23,15 @@ t_dongle	*init_dongles(int nb, int mode)
 		return (NULL);
 	while (i < nb)
 	{
-		dongles[i].is_taken = 1;
+		dongles[i].id = i;
+		dongles[i].is_taken = 0;
 		dongles[i].last_release = 0;
+		dongles[i].queue = create_heap(nb, mode);
 		pthread_mutex_init(&dongles[i].mutex, NULL);
 		pthread_cond_init(&dongles[i].cond, NULL);
-		dongles[i].queue = create_heap(nb, mode);
 		i++;
 	}
 	return (dongles);
-}
-
-void	init_data(t_data *data, char **argv)
-{
-	data->nb_coders = atoi(argv[1]);
-	data->burnout_time = atoi(argv[2]);
-	data->compile = atoi(argv[3]);
-	data->debug = atoi(argv[4]);
-	data->refactor = atoi(argv[5]);
-	data->required_compiles = atoi(argv[6]);
-	data->cooldown = atoi(argv[7]);
-	data->mode = valid_scheduler(argv[8]);
-	data->dongles = init_dongles(data->nb_coders, data->mode);
-	data->start_time = get_current_time();
-	data->burnout_detected = 0;
 }
 
 void	create_threads(t_data *data, t_coder *coder, pthread_t *monitor,
@@ -78,7 +64,9 @@ void	join_threads(t_data *data, pthread_t *monitor, pthread_t *threads)
 
 	i = -1;
 	while (++i < data->nb_coders)
+	{
 		pthread_join(threads[i], NULL);
+	}
 	pthread_join(*monitor, NULL);
 }
 
@@ -102,4 +90,19 @@ void	init_simulation(t_data *data)
 	join_threads(data, &monitor, threads);
 	free(coder);
 	free(threads);
+}
+
+void	init_data(t_data *data, char **argv)
+{
+	data->nb_coders = atoi(argv[1]);
+	data->burnout_time = atoi(argv[2]);
+	data->compile = atoi(argv[3]);
+	data->debug = atoi(argv[4]);
+	data->refactor = atoi(argv[5]);
+	data->required_compiles = atoi(argv[6]);
+	data->cooldown = atoi(argv[7]);
+	data->mode = valid_scheduler(argv[8]);
+	data->dongles = init_dongles(data->nb_coders, data->mode);
+	data->start_time = get_current_time();
+	data->burnout_detected = 0;
 }

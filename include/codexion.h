@@ -26,7 +26,7 @@ typedef struct s_request
 {
 	int			coder_id;
 	int			deadline;
-	int			arrival_time;
+	long long	arrival_time;
 }	t_request;
 
 typedef struct s_heap
@@ -66,7 +66,7 @@ typedef struct s_data
 	int				refactor;
 	int				required_compiles;
 	int				cooldown;
-	int				start_time;
+	long long		start_time;
 	int				mode;
 	int				burnout_detected;
 	pthread_mutex_t	write_mutex;
@@ -85,8 +85,9 @@ int			is_enough_arguments(int argc);
 int			valid_scheduler(char *s1);
 int			is_valid_data(int argc, char **argv);
 t_dongle	*init_dongles(int nb, int mode);
-int			get_current_time(void);
-void		get_timeout(int cooldown, int last_release, struct timespec *abstime);
+long		get_current_time(void);
+void		get_timeout(int cooldown, int last_release,
+				struct timespec *abstime);
 void		init_data(t_data *data, char **argv);
 t_request	pop_node(t_heap *heap);
 void		push_node(t_heap *heap, int coder_id, int deadline);
@@ -99,7 +100,9 @@ int			min(int a, int b);
 int			take_both_dongles(t_coder *coder);
 int			release_both_dongles(t_coder *coder);
 void		display_state(char *s, t_coder *coder);
+void		display_dongle(char *s, t_coder *coder, int nb);
 void		init_simulation(t_data *data);
 void		ft_usleep(int timesleep, t_data *data);
+long long	timestamp(t_data *data);
 
 #endif
