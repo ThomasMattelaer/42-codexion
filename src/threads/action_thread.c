@@ -49,7 +49,7 @@ int	request_single_dongle(t_coder *coder, t_dongle *dongle)
 	}
 }
 
-int	release_single_dongle(t_coder *coder, t_dongle *dongle)
+int	release_single_dongle(t_dongle *dongle)
 {
 	pthread_mutex_lock(&dongle->mutex);
 	dongle->is_taken = 0;
@@ -67,7 +67,7 @@ int	take_both_dongles(t_coder *coder)
 		return (0);
 	if (!request_single_dongle(coder, coder->right_dongle))
 	{
-		release_single_dongle(coder, coder->left_dongle);
+		release_single_dongle(coder->left_dongle);
 		return (0);
 	}
 	return (1);
@@ -75,7 +75,7 @@ int	take_both_dongles(t_coder *coder)
 
 int	release_both_dongles(t_coder *coder)
 {
-	release_single_dongle(coder, coder->left_dongle);
-	release_single_dongle(coder, coder->right_dongle);
+	release_single_dongle(coder->left_dongle);
+	release_single_dongle(coder->right_dongle);
 	return (1);
 }

@@ -39,3 +39,16 @@ void	get_timeout(int cooldown, int last_release, struct timespec *abstime)
 		abstime->tv_nsec -= 1000000000;
 	}
 }
+
+void	ft_usleep(int timesleep, t_data *data)
+{
+	int	start;
+
+	start = get_current_time();
+	while(!data->burnout_detected)
+	{
+		if(get_current_time() - start >= timesleep)
+			break;
+		usleep(500);
+	}
+}

@@ -15,7 +15,6 @@
 int	main(int argc, char **argv)
 {
 	t_data	*data;
-	t_data	*test2;
 
 	data = malloc(sizeof(t_data));
 	if (!data)
@@ -26,6 +25,6 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	init_data(data, argv);
-	print_data(data);
+	init_simulation(data);
 	return (0);
 }

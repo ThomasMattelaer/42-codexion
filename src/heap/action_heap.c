@@ -15,9 +15,13 @@
 t_request	pop_node(t_heap *heap)
 {
 	t_request	value;
+	t_request	empty;
 
 	if (heap->size == 0)
-		return (value);
+	{
+		empty.coder_id = -1;
+		return (empty);
+	}
 	value = heap->tab[0];
 	heap->tab[0] = heap->tab[heap->size - 1];
 	heap->size--;
