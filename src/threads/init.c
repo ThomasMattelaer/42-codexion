@@ -49,6 +49,7 @@ void	create_threads(t_data *data, t_coder *coder, pthread_t *monitor,
 		coder[i].last_compile = data->start_time;
 		coder[i].left_dongle = &data->dongles[i];
 		coder[i].right_dongle = &data->dongles[(i + 1) % data->nb_coders];
+		pthread_mutex_init(&coder[i].coder_mutex, NULL);
 		i++;
 	}
 	i = 0;
@@ -87,11 +88,12 @@ void	init_simulation(t_data *data)
 		return ;
 	}
 	pthread_mutex_init(&data->burn_mutex, NULL);
+	pthread_mutex_init(&data->write_mutex, NULL);
 	data->coders = coder;
 	create_threads(data, coder, &monitor, threads);
 	join_threads(data, &monitor, threads);
-	free(coder);
 	free(threads);
+	destroy_mutex_and_cond(data);
 }
 
 void	init_data(t_data *data, char **argv)

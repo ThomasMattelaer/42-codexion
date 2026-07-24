@@ -109,5 +109,8 @@ int			compiling(t_coder *coder);
 int			debugging_and_refactoring(t_coder *coder);
 int			is_coder_burned(t_data *data, int i);
 int			burnout_detected(t_data *data);
+void		free_simulation(t_data	*data);
+void		safe_broadcast(pthread_cond_t *cond, pthread_mutex_t *mutex);
+void		destroy_mutex_and_cond(t_data *data);
 
 #endif

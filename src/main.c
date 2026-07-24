@@ -26,5 +26,6 @@ int	main(int argc, char **argv)
 	}
 	init_data(data, argv);
 	init_simulation(data);
+	free_simulation(data); 
 	return (0);
 }

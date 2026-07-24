@@ -42,8 +42,10 @@ void	display_state(char *s, t_coder *coder)
 		color = "91";
 	else
 		color = 0;
+	pthread_mutex_lock(&coder->data->write_mutex);
 	printf("\x1b[90m[%lldms]\x1b[0m \x1b[%sm%s\x1b[0m C%d\n",
 		timestamp(coder->data), color, s, index);
+	pthread_mutex_unlock(&coder->data->write_mutex);
 }
 
 void	display_dongle(char *s, t_coder *coder, int nb)
@@ -60,8 +62,10 @@ void	display_dongle(char *s, t_coder *coder, int nb)
 		color = "38;2;16;185;129";
 	else
 		color = 0;
+	pthread_mutex_lock(&coder->data->write_mutex);
 	printf("\x1b[90m[%lldms]\x1b[0m \x1b[%sm%s\x1b[0m C%d D%d\n",
 		timestamp(coder->data), color, s, index, nb);
+	pthread_mutex_unlock(&coder->data->write_mutex);
 }
 int	burnout_detected(t_data *data)
 {

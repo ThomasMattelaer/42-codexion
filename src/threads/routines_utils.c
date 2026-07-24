@@ -14,7 +14,7 @@
 
 int	compiling(t_coder *coder)
 {
-	if (coder->data->burnout_detected)
+	if (burnout_detected(coder->data))
 		return (0);
 	pthread_mutex_lock(&coder->coder_mutex);
 	coder->last_compile = get_current_time();
@@ -61,9 +61,16 @@ int	is_coder_burned(t_data *data, int i)
 		pthread_mutex_unlock(&data->burn_mutex);
 		j = -1;
 		while (++j < data->nb_coders)
-			pthread_cond_broadcast(&data->dongles[j].cond);
+			safe_broadcast(&data->dongles[j].cond, &data->dongles[j].mutex);
 		display_state("burned out", &data->coders[i]);
 		return (1);
 	}
 	return (0);
+}
+
+void	safe_broadcast(pthread_cond_t *cond, pthread_mutex_t *mutex)
+{
+	pthread_mutex_lock(mutex);
+	pthread_cond_broadcast(cond);
+	pthread_mutex_unlock(mutex);
 }
