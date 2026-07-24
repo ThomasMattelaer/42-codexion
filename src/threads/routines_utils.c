@@ -17,7 +17,7 @@ int	compiling(t_coder *coder)
 	if (coder->data->burnout_detected)
 		return (0);
 	pthread_mutex_lock(&coder->coder_mutex);
-	coder->last_compile = timestamp(coder->data);
+	coder->last_compile = get_current_time();
 	pthread_mutex_unlock(&coder->coder_mutex);
 	display_state("is compiling", coder);
 	ft_usleep(coder->data->compile, coder->data);
@@ -54,7 +54,7 @@ int	is_coder_burned(t_data *data, int i)
 	pthread_mutex_unlock(&data->coders[i].coder_mutex);
 	if(nb_compiled >= data->required_compiles)
 		return (0);
-	if (timestamp(data) - last >= data->burnout_time)
+	if (get_current_time() - last >= data->burnout_time)
 	{
 		pthread_mutex_lock(&data->burn_mutex);
 		data->burnout_detected = 1;

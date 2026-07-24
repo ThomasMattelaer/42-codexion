@@ -40,7 +40,7 @@ void	create_threads(t_data *data, t_coder *coder, pthread_t *monitor,
 	int	i;
 
 	i = 0;
-	data->start_time = get_current_time(); 
+	data->start_time = get_current_time();
 	while (i < data->nb_coders)
 	{
 		coder[i].id = i;
