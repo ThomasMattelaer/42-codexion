@@ -17,6 +17,10 @@ void	*coder_routine(void *arg)
 	t_coder	*coder;
 
 	coder = (t_coder *) arg;
+	if (coder->id % 2 == 1)
+		usleep(300000);
+	else if (coder->id == coder->data->nb_coders - 1)
+		usleep(150000);
 	while (!coder->data->burnout_detected
 		&& coder->nb_compiled < coder->data->required_compiles)
 	{

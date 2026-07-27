@@ -74,3 +74,17 @@ void	safe_broadcast(pthread_cond_t *cond, pthread_mutex_t *mutex)
 	pthread_cond_broadcast(cond);
 	pthread_mutex_unlock(mutex);
 }
+
+void	determine_order(t_coder *coder, t_dongle **first, t_dongle **second)
+{
+	if (coder->left_dongle->id < coder->right_dongle->id)
+	{
+		*first = coder->left_dongle;
+		*second = coder->right_dongle;
+	}
+	else
+	{
+		*first = coder->right_dongle;
+		*second = coder->left_dongle;
+	}
+}

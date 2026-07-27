@@ -14,88 +14,77 @@
 
 int	is_dongle_ready(t_coder *coder, t_dongle *dongle)
 {
-	return (!dongle->is_taken
-		&& (dongle->queue->size > 0
-			&& dongle->queue->tab[0].coder_id == coder->id)
-		&& (timestamp(coder->data)
-			- dongle->last_release >= coder->data->cooldown));
-}
-
-int	request_single_dongle(t_coder *coder, t_dongle *dongle)
-{
-	struct timespec	abstime;
-
-	pthread_mutex_lock(&dongle->mutex);
-	push_node(dongle->queue, coder->id,
-		coder->last_compile + coder->data->burnout_time);
-	while (1)
+	if (dongle->is_taken)
+		return (0);
+	if (dongle->queue->size == 0 || dongle->queue->tab[0].coder_id != coder->id)
+		return (0);
+	if (dongle->last_release != -1)
 	{
-		if (burnout_detected(coder->data))
-		{
-			remove_node(dongle->queue, coder->id);
-			pthread_cond_broadcast(&dongle->cond);
-			pthread_mutex_unlock(&dongle->mutex);
+		if (timestamp(coder->data) - dongle->last_release < coder->data->cooldown)
 			return (0);
-		}
-		if (is_dongle_ready(coder, dongle))
-		{
-			dongle->is_taken = 1;
-			display_dongle("has taken a dongle", coder, dongle->id);
-			pop_node(dongle->queue);
-			pthread_mutex_unlock(&dongle->mutex);
-			return (1);
-		}
-		get_timeout(coder->data->cooldown, dongle->last_release, &abstime);
-		pthread_cond_timedwait(&dongle->cond, &dongle->mutex, &abstime);
-	}
-}
-
-int	release_single_dongle(t_coder *coder, t_dongle *dongle)
-{
-	pthread_mutex_lock(&dongle->mutex);
-	dongle->is_taken = 0;
-	dongle->last_release = timestamp(coder->data);
-	pthread_cond_broadcast(&dongle->cond);
-	pthread_mutex_unlock(&dongle->mutex);
-	return (0);
-}
-
-int	take_both_dongles(t_coder *coder)
-{
-	t_dongle	*first;
-	t_dongle	*second;
-
-	if (coder->left_dongle->id < coder->right_dongle->id)
-	{
-		first = coder->left_dongle;
-		second = coder->right_dongle;
-	}
-	else
-	{
-		first = coder->right_dongle;
-		second = coder->left_dongle;
-	}
-	if (first == second)
-		return (0);
-	display_dongle("request a dongle", coder, first->id);
-	if (!request_single_dongle(coder, first))
-		return (0);
-	display_dongle("request a dongle", coder, second->id);
-	if (!request_single_dongle(coder, second))
-	{
-		release_single_dongle(coder, first);
-		return (0);
 	}
 	return (1);
 }
 
+
+int	dongle_has_been_taken(t_dongle *first, t_dongle *second, t_coder *coder)
+{
+	first->is_taken = 1;
+	second->is_taken = 1;
+	pop_node(first->queue);
+	pop_node(second->queue);
+	display_dongle("has taken a dongle", coder, first->id);
+	display_dongle("has taken a dongle", coder, second->id);
+	pthread_mutex_unlock(&first->mutex);
+	pthread_mutex_unlock(&second->mutex);
+	return (1);
+}
+
+int	take_both_dongles(t_coder *coder)
+{
+	t_dongle		*first;
+	t_dongle		*second;
+	struct timespec	abstime;
+
+	determine_order(coder, &first, &second);
+	if (first == second)
+		return (0);
+	push_both_dongles(first, second, coder);
+	while (1)
+	{
+		if (burnout_detected(coder->data))
+			return (remove_both_nodes(coder, first, second));
+		pthread_mutex_lock(&first->mutex);
+		pthread_mutex_lock(&second->mutex);
+		if (is_dongle_ready(coder, first) && is_dongle_ready(coder, second))
+			return (dongle_has_been_taken(first, second, coder));
+		pthread_mutex_unlock(&second->mutex);
+		get_timeout(coder->data->cooldown, first->last_release, &abstime);
+		pthread_cond_timedwait(&first->cond, &first->mutex, &abstime);
+		pthread_mutex_unlock(&first->mutex);
+	}
+}
+
 int	release_both_dongles(t_coder *coder)
 {
-	release_single_dongle(coder, coder->left_dongle);
+	t_dongle	*first;
+	t_dongle	*second;
+
+	determine_order(coder, &first, &second);
+	pthread_mutex_lock(&first->mutex);
+	pthread_mutex_lock(&second->mutex);
+	first->is_taken = 0;
+	second->is_taken = 0;
+	first->last_release = timestamp(coder->data);
+	second->last_release = timestamp(coder->data);
 	if (!burnout_detected(coder->data))
-		display_dongle("release a dongle", coder, coder->left_dongle->id);
-	release_single_dongle(coder, coder->right_dongle);
-	if (!burnout_detected(coder->data))
-		display_dongle("release a dongle", coder, coder->right_dongle->id);
+	{
+		display_dongle("release a dongle", coder, first->id);
+		display_dongle("release a dongle", coder, second->id);
+	}
+	pthread_cond_broadcast(&first->cond);
+	pthread_cond_broadcast(&second->cond);
+	pthread_mutex_unlock(&first->mutex);
+	pthread_mutex_unlock(&second->mutex);
 	return (1);
 }

@@ -25,7 +25,7 @@ t_dongle	*init_dongles(int nb, int mode)
 	{
 		dongles[i].id = i;
 		dongles[i].is_taken = 0;
-		dongles[i].last_release = 0;
+		dongles[i].last_release = -1;
 		dongles[i].queue = create_heap(nb, mode);
 		pthread_mutex_init(&dongles[i].mutex, NULL);
 		pthread_cond_init(&dongles[i].cond, NULL);

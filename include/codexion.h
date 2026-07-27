@@ -112,5 +112,11 @@ int			burnout_detected(t_data *data);
 void		free_simulation(t_data	*data);
 void		safe_broadcast(pthread_cond_t *cond, pthread_mutex_t *mutex);
 void		destroy_mutex_and_cond(t_data *data);
+void		push_both_dongles(t_dongle *dongle_first, t_dongle *dongle_second,
+				t_coder *coder);
+void		determine_order(t_coder *coder, t_dongle **first,
+				t_dongle **second);
+int			remove_both_nodes(t_coder *coder, t_dongle *first,
+				t_dongle *second);
 
 #endif
