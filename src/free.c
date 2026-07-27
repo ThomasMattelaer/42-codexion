@@ -19,17 +19,17 @@ void	free_simulation(t_data	*data)
 	i = -1;
 	while (++i < data->nb_coders)
 	{
-		if(data->dongles[i].queue != NULL)
+		if (data->dongles[i].queue != NULL)
 		{
 			free(data->dongles[i].queue->tab);
 			free(data->dongles[i].queue);
 		}
 	}
-	if(data->coders != NULL)
+	if (data->coders != NULL)
 		free(data->coders);
-	if(data->dongles != NULL)
+	if (data->dongles != NULL)
 		free(data->dongles);
-	if(data != NULL)
+	if (data != NULL)
 		free(data);
 }
 
@@ -38,14 +38,14 @@ void	destroy_mutex_and_cond(t_data *data)
 	int	i;
 
 	i = 0;
-	while(i < data->nb_coders)
+	while (i < data->nb_coders)
 	{
 		pthread_mutex_destroy(&data->dongles[i].mutex);
 		pthread_cond_destroy(&data->dongles[i].cond);
 		i++;
 	}
 	i = 0;
-	while(i < data->nb_coders)
+	while (i < data->nb_coders)
 	{
 		pthread_mutex_destroy(&data->coders[i].coder_mutex);
 		i++;

@@ -30,16 +30,12 @@ void	get_timeout(int cooldown, long long last_release,
 
 	gettimeofday(&now, NULL);
 	now_ms = now.tv_sec * 1000 + now.tv_usec / 1000;
-
 	wait_ms = (last_release + cooldown) - now_ms;
-
 	if (wait_ms < 0)
 		wait_ms = 0;
-
 	abstime->tv_sec = now.tv_sec + wait_ms / 1000;
 	abstime->tv_nsec = (now.tv_usec * 1000)
 		+ ((wait_ms % 1000) * 1000000);
-
 	if (abstime->tv_nsec >= 1000000000)
 	{
 		abstime->tv_sec++;

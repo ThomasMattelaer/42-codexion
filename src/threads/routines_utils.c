@@ -52,7 +52,7 @@ int	is_coder_burned(t_data *data, int i)
 	last = data->coders[i].last_compile;
 	nb_compiled = data->coders[i].nb_compiled;
 	pthread_mutex_unlock(&data->coders[i].coder_mutex);
-	if(nb_compiled >= data->required_compiles)
+	if (nb_compiled >= data->required_compiles)
 		return (0);
 	if (get_current_time() - last >= data->burnout_time)
 	{

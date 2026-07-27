@@ -53,7 +53,7 @@ void	create_threads(t_data *data, t_coder *coder, pthread_t *monitor,
 		i++;
 	}
 	i = 0;
-	while(i < data->nb_coders)
+	while (i < data->nb_coders)
 	{
 		pthread_create(&threads[i], NULL, coder_routine, &coder[i]);
 		i++;

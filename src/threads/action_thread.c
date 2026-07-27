@@ -92,10 +92,10 @@ int	take_both_dongles(t_coder *coder)
 int	release_both_dongles(t_coder *coder)
 {
 	release_single_dongle(coder, coder->left_dongle);
-	if(!burnout_detected(coder->data))
+	if (!burnout_detected(coder->data))
 		display_dongle("release a dongle", coder, coder->left_dongle->id);
 	release_single_dongle(coder, coder->right_dongle);
-	if(!burnout_detected(coder->data))
+	if (!burnout_detected(coder->data))
 		display_dongle("release a dongle", coder, coder->right_dongle->id);
 	return (1);
 }

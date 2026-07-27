@@ -42,7 +42,7 @@ void	*monitor_routine(void	*arg)
 
 	data = (t_data *) arg;
 	i = 0;
-	while(1)
+	while (1)
 	{
 		i = data->nb_coders;
 		finished_count = 0;
@@ -61,5 +61,3 @@ void	*monitor_routine(void	*arg)
 	}
 	return (NULL);
 }
-
-

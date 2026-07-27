@@ -67,6 +67,7 @@ void	display_dongle(char *s, t_coder *coder, int nb)
 		timestamp(coder->data), color, s, index, nb);
 	pthread_mutex_unlock(&coder->data->write_mutex);
 }
+
 int	burnout_detected(t_data *data)
 {
 	int	burnout;
