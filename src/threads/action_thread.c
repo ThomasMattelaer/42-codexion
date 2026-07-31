@@ -20,12 +20,12 @@ int	is_dongle_ready(t_coder *coder, t_dongle *dongle)
 		return (0);
 	if (dongle->last_release != -1)
 	{
-		if (timestamp(coder->data) - dongle->last_release < coder->data->cooldown)
+		if (timestamp(coder->data) - dongle->last_release
+			< coder->data->cooldown)
 			return (0);
 	}
 	return (1);
 }
-
 
 int	dongle_has_been_taken(t_dongle *first, t_dongle *second, t_coder *coder)
 {
